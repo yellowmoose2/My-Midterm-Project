@@ -1,0 +1,76 @@
+@import 'variables';
+/*
+  Defining a mixin to add a feel of depth to the elements
+  We are setting a default value of the $height to high using $height:high
+*/
+@mixin liftUp($height:high){
+  // adding an if and esle if statement to check the value of the argument
+  @if $height == high {
+    // The box-shadow property will be automatically prefixed with -webkit- in our final minified file by autoprefixer module
+    box-shadow: 1px 2px 5px 2px black;
+  } @else if $height == higher {
+    box-shadow: 2px 4px 10px 2px black;
+  } @else if $height == highest {
+    box-shadow: 4px 8px 30px 2px black;
+  }
+}
+
+body{
+  font-family: $fonts-text;
+  background-color: $asphalt;
+  color: $clouds;
+  font-size: $text-font-size;
+}
+h1, h2, h3, h4, h5, h6{
+  font-family: $font-headings;
+}
+nav{
+  // Setting a local value for the variable. This will overite the value for the !default but only inside this declaration
+  $text-font-size: 20px;
+  font-size: $text-font-size;
+  background-color: $clouds;
+  ul{
+    li{
+      display: inline-block;
+      a{
+        display: block;
+        padding: 20px;
+        color: $asphalt;
+        /*
+          Using variable interpolation.
+          Adding border- in front of the variable which compiles to border-radius
+        */
+        border-#{$nav-border-side}: 1px solid $asphalt;
+        transition: all 300ms ease-in-out;
+        &:hover, &:focus{
+          color: $clouds;
+          background-color: $asphalt;
+        }
+      }
+    }
+  }
+}
+// defining the base styles shared by all shapes
+.shape{
+  display: inline-block;
+  width: 100px;
+  height: 100px;
+  margin: $text-font-size;
+  // lighten is a predefined scss variable which gives us a lighter version of the color we supply by the percent we set, similarly we can use darken to get a darker shade of the color.
+  background-color: lighten($asphalt, 30%);
+  border: 1px solid lighten($asphalt, 26%);
+}
+.shape1{
+  // using @extend keyword we are adding all the styles form the class shape to the element with class .shape1
+  @extend .shape;
+  // Using the @include variable we are calling the mixin and supplying the value of the argument as high
+  @include liftUp(high);
+}
+.shape2{
+  @extend .shape;
+  @include liftUp(higher);
+}
+.shape3{
+  @extend .shape;
+  @include liftUp(highest);
+}
